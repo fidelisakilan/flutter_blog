@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1053190545044",
+    "firebase_url": "https://blogapp-f7d69.firebaseio.com",
+    "project_id": "blogapp-f7d69",
+    "storage_bucket": "blogapp-f7d69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053190545044:android:acb33686cf04bf47d3de81",
+        "android_client_info": {
+          "package_name": "me.fidelisakilan.flutter_blogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053190545044-qbe157cb7njubfc470va3nvs8j0tn3fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkcMu4SFQFmzNpsJIwoVvkxntJOI7Vp4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053190545044-qbe157cb7njubfc470va3nvs8j0tn3fe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
