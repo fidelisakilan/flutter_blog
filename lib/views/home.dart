@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blogger/services/crud.dart';
 import 'package:flutter_blogger/views/create_blog.dart';
@@ -11,28 +11,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   CrudMethods crudMethods = new CrudMethods();
 
-  QuerySnapshot blogSnapshot;
+  Stream blogStream;
   Widget blogList() {
-    return blogSnapshot != null
+    return blogStream != null
         ? Container(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return BlogsTile(
-                        authorName:
-                            blogSnapshot.docs[index].data()['authorName'],
-                        description:
-                            blogSnapshot.docs[index].data()['description'],
-                        imgUrl: blogSnapshot.docs[index].data()['imgUrl'],
-                        title: blogSnapshot.docs[index].data()['title'],
-                      );
-                    },
-                    itemCount: blogSnapshot.docs.length,
-                  )
+                  SizedBox(
+                    height: 10,
+                  ),
+                  StreamBuilder(
+                      stream: blogStream,
+                      builder: (context, snapshot) {
+                        return snapshot.data == null
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : ListView.builder(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return BlogsTile(
+                                    authorName: snapshot.data.docs[index]
+                                        .data()['authorName'],
+                                    description: snapshot.data.docs[index]
+                                        .data()['description'],
+                                    imgUrl: snapshot.data.docs[index]
+                                        .data()['imgUrl'],
+                                    title: snapshot.data.docs[index]
+                                        .data()['title'],
+                                  );
+                                },
+                                itemCount: snapshot.data.docs.length,
+                              );
+                      }),
                 ],
               ),
             ),
@@ -46,12 +59,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
+
     crudMethods.getData().then((result) {
       setState(() {
-        blogSnapshot = result;
+        blogStream = result;
       });
     });
-    super.initState();
   }
 
   @override
@@ -104,8 +118,8 @@ class BlogsTile extends StatelessWidget {
       child: Stack(
         children: [
           ClipRRect(
-            child: Image.network(
-              imgUrl,
+            child: CachedNetworkImage(
+              imageUrl: imgUrl,
               fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width,
             ),
